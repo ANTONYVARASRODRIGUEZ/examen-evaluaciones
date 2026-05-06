@@ -22,12 +22,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
-// --- CONEXIÓN A MYSQL ---
+// --- CONEXIÓN A MYSQL (ACTUALIZADA PARA AIVEN) ---
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 24617,
+    ssl: {
+        rejectUnauthorized: false // Esto permite la conexión segura con Aiven
+    }
 });
 
 db.connect(err => {
